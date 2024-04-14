@@ -21,7 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build project with Maven
-        run: mvn package
+        run: mvn clean install
       - name: Depcheck
         uses: dependency-check/Dependency-Check_Action@main
         id: Depcheck
