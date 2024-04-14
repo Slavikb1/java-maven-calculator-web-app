@@ -10,10 +10,10 @@ def getFtpPublishProfile(def publishProfilesJson) {
 node {
    def mvnHome = tool 'M3'
 
-   stage('Checkout') { 
+   stage('Checkout') {
       git 'https://github.com/maping/java-maven-calculator-web-app.git'
    }
-   
+
    stage('Build') {
       if (isUnix()) {
          sh "'${mvnHome}/bin/mvn' clean package"
@@ -21,11 +21,11 @@ node {
          bat(/"${mvnHome}\bin\mvn" clean package/)
       }
    }
-   
+
    stage('Deploy') {
-      def resourceGroup = 'mapingAppServiceRG' 
+      def resourceGroup = 'mapingAppServiceRG'
       def webAppName = 'mapingcalculator'
-      
+
       if (isUnix()) {
         // login Azure
         withCredentials([azureServicePrincipal('40d0390e-a7d6-46ca-92c4-213b1192044f')]) {
@@ -46,7 +46,7 @@ node {
 
         // log out
         sh 'az logout'
-        
+
       } else {
         // login Azure
         withCredentials([azureServicePrincipal('029310de-62cf-45f9-a62b-3f56df679693')]) {
@@ -66,12 +66,11 @@ node {
         bat '''
           "curl -T target/calculator.war $ftpProfile.url/webapps/ROOT.war -u '$ftpProfile.username:$ftpProfile.password'"
         '''
-        
+
         // log out
         bat '''
           az logout
         '''
-      }     
+      }
    }
 }
-   

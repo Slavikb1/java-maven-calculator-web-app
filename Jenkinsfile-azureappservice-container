@@ -9,11 +9,11 @@ node {
   stage('init') {
     checkout scm
   }
-  
+
   stage('build') {
     sh 'mvn clean package'
   }
-  
+
   stage('deploy') {
     def webAppResourceGroup = 'mapingAppContainerServiceRG'
     def webAppName = 'mapingContainerJavaWebAppSample'
